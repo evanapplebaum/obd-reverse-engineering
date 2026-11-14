@@ -6,9 +6,11 @@ adapter on a Jetson. **Parked only. Never on a public road.**
 > Tags: anything marked **(inferred)** is unverified. Remove the tag only after
 > it has been checked on real hardware.
 
-## Commands (inferred: scripts not written yet)
-- Bring up bus: `scripts/setup_can.sh` (can0 @ 500 kbit/s, listen-only)
-- Baseline log: `scripts/log_baseline.py`
+## Commands
+- Bring up bus: `sudo scripts/setup_can.sh [iface] [bitrate]` (default can0 @ 500k,
+  listen-only; refuses non-gs_usb interfaces and exits unless LISTEN-ONLY is read back)
+  (written, not yet run on hardware: inferred)
+- Baseline log: `scripts/log_baseline.py` (inferred: not written yet)
 
 ## Architecture invariants
 - Host: Jetson Orin Nano, native SocketCAN, interface `can0` (inferred: see STATE.md open questions)
@@ -34,4 +36,4 @@ adapter on a Jetson. **Parked only. Never on a public road.**
 - `docs/HARDWARE.md`: adapter, host, wiring, bus limits
 - `docs/decisions/`: numbered decision records
 - `.claude/rules/`: safety rules, scoped to `scripts/`
-- `captures/`: raw candump logs (not edited by hand)
+- `captures/`: raw candump logs. **Gitignored.** They can contain the VIN, so never commit raw captures.

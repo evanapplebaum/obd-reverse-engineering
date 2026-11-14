@@ -1,0 +1,14 @@
+# Raw captures stay local: they can contain the VIN and other vehicle identifiers.
+# Commit scrubbed samples elsewhere (e.g. samples/) on purpose, never raw logs.
+captures/*
+!captures/.gitkeep
+*.log
+*.asc
+*.blf
+
+# Local tooling
+.claude/settings.local.json
+.DS_Store
+__pycache__/
+*.pyc
+.venv/
