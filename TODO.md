@@ -10,7 +10,6 @@ _Inbox and Backlog items are not approved for implementation._
 - [ ] Scrubbed sample captures (VIN removed) under `samples/` for the repo
 
 ## Ready
-- [ ] Write `scripts/log_baseline.py` (calls or checks setup_can.sh first, writes to `captures/`)
 - [ ] Button-press frame diffing (baseline vs. single action)
 
 ## Now
@@ -19,10 +18,15 @@ _Inbox and Backlog items are not approved for implementation._
 - [ ] Bench test: confirm firmware, interface name, run `setup_can.sh`, termination ON, no car
   - Check the script's two unverified assumptions against real output:
     (a) the driver detection via `/sys/class/net/<if>/device/driver` resolves to `gs_usb`;
-    (b) `ip -details` prints `bitrate 500000 ` with a trailing space, which the grep depends on.
+    (b) `ip -details` prints `bitrate 500000 ` with a trailing space, which the grep depends on;
+    (c) `LISTEN-ONLY` appears only in the active ctrlmode, not in a supported-modes list.
+  - Run `scripts/log_baseline.py --label bench --duration 10`: expect 0 frames, 0 errors, VALID.
+  - Save real `ip -json -details link show dev <if>` (listen-only on, and off) over the
+    hand-written fixtures in `tests/fixtures/`, then rerun the tests.
 - [ ] Baseline capture: parked, engine off, termination OFF, listen-only
 
 ## Done Recently
+- [x] `scripts/log_baseline.py` written + unit tests (17 pass on macOS), untested on hardware (2026-11-14)
 - [x] Project docs set up, git repo pushed (2026-11-13)
 - [x] `.gitignore` keeps raw captures local (2026-11-13)
 - [x] `scripts/setup_can.sh` written: listen-only enforced, untested (2026-11-13)

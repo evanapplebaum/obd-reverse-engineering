@@ -10,7 +10,10 @@ adapter on a Jetson. **Parked only. Never on a public road.**
 - Bring up bus: `sudo scripts/setup_can.sh [iface] [bitrate]` (default can0 @ 500k,
   listen-only; refuses non-gs_usb interfaces and exits unless LISTEN-ONLY is read back)
   (written, not yet run on hardware: inferred)
-- Baseline log: `scripts/log_baseline.py` (inferred: not written yet)
+- Baseline log: `scripts/log_baseline.py --label <car-state> [--iface can0] [--duration s]`
+  (checks only, never configures: refuses unless gs_usb + up + LISTEN-ONLY + bitrate;
+  writes `captures/<stamp>_<label>.log|.json`) (written, not yet run on hardware: inferred)
+- Tests (no hardware): `python3 -m unittest discover tests`
 
 ## Architecture invariants
 - Host: Jetson Orin Nano, native SocketCAN, interface `can0` (inferred: see STATE.md open questions)

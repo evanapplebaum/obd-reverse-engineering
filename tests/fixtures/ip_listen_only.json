@@ -1,0 +1,55 @@
+[
+  {
+    "_note": "hand-written (inferred): replace with real `ip -json -details link show dev can0` output from the Jetson",
+    "ifindex": 5,
+    "ifname": "can0",
+    "flags": [
+      "NOARP",
+      "UP",
+      "LOWER_UP",
+      "ECHO"
+    ],
+    "mtu": 72,
+    "qdisc": "pfifo_fast",
+    "operstate": "UP",
+    "linkmode": "DEFAULT",
+    "group": "default",
+    "txqlen": 10,
+    "link_type": "can",
+    "linkinfo": {
+      "info_kind": "can",
+      "info_data": {
+        "ctrlmode": [
+          "LISTEN-ONLY"
+        ],
+        "ctrlmode_supported": [
+          "LOOPBACK",
+          "LISTEN-ONLY",
+          "TRIPLE-SAMPLING",
+          "ONE-SHOT",
+          "BERR-REPORTING",
+          "FD"
+        ],
+        "state": "ERROR-ACTIVE",
+        "berr_counter": {
+          "tx": 0,
+          "rx": 0
+        },
+        "restart_ms": 0,
+        "bittiming": {
+          "bitrate": 500000,
+          "sample_point": "0.875",
+          "tq": 125,
+          "prop_seg": 6,
+          "phase_seg1": 7,
+          "phase_seg2": 2,
+          "sjw": 1,
+          "brp": 6
+        },
+        "clock": 48000000
+      }
+    },
+    "parentbus": "usb",
+    "parentdev": "1-2.1:1.0"
+  }
+]
