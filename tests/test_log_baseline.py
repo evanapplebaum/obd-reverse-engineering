@@ -1,11 +1,12 @@
 """Tests for scripts/log_baseline.py. Run: python3 -m unittest discover tests
 
-No hardware needed. Fixtures in tests/fixtures/ are hand-written (inferred)
-until replaced with real `ip -json -details` output from the Jetson.
+No hardware needed. ip_listen_only.json is real can1 output from the Orin (2026-11-16);
+the other fixtures are hand-written (inferred).
 """
 import importlib.util
 import re
 import struct
+import sys
 import unittest
 from pathlib import Path
 
@@ -14,11 +15,12 @@ FIX = REPO / "tests" / "fixtures"
 
 spec = importlib.util.spec_from_file_location("log_baseline", REPO / "scripts" / "log_baseline.py")
 lb = importlib.util.module_from_spec(spec)
+sys.modules[spec.name] = lb  # dataclasses (py3.12) look the module up here
 spec.loader.exec_module(lb)
 
 
 def link(name):
-    return lb.parse_link((FIX / name).read_text(), "can0")
+    return lb.parse_link((FIX / name).read_text(), "can1")
 
 
 def classic(can_id, data=b"", length=None):
@@ -55,7 +57,7 @@ class LinkChecks(unittest.TestCase):
 
     def test_missing_iface(self):
         with self.assertRaises(ValueError):
-            lb.parse_link((FIX / "ip_listen_only.json").read_text(), "can1")
+            lb.parse_link((FIX / "ip_listen_only.json").read_text(), "can9")
 
 
 class FrameFormat(unittest.TestCase):

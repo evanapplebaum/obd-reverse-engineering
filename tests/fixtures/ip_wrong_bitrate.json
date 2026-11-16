@@ -2,7 +2,7 @@
   {
     "_note": "hand-written (inferred): replace with real `ip -json -details link show dev can0` output from the Jetson",
     "ifindex": 5,
-    "ifname": "can0",
+    "ifname": "can1",
     "flags": [
       "NOARP",
       "UP",

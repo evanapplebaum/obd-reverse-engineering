@@ -1,28 +1,28 @@
 # State
 
-_Snapshot, overwritten each session. Last updated: 2026-11-14._
+_Snapshot, overwritten each session. Last updated: 2026-11-16._
 
 ## Objective
-Get `can0` up and capture a clean baseline.
+Capture a clean baseline on the car: parked, engine off, listen-only.
 
 ## Working capabilities
-None verified on hardware.
-- `scripts/setup_can.sh`: written, passes `bash -n`.
-- `scripts/log_baseline.py`: written; refuses to capture unless gs_usb + up + LISTEN-ONLY
-  + bitrate (via `ip -json -details`), re-checks at the end, logs candump `-L` format.
-  Unit tests pass on macOS against hand-written (inferred) fixtures.
+Bench-verified on the Orin, 2026-11-16 (no car, termination ON):
+- Adapter enumerates as `can1` (gs_usb, candleLight `1d50:606f`). `can0` is on-board mttcan.
+- `sudo scripts/setup_can.sh` brings `can1` up at 500k with `<LISTEN-ONLY>` read back.
+- `scripts/log_baseline.py --label bench --duration 10`: 0 frames, 0 errors, VALID,
+  LISTEN-ONLY at start and end.
+- Both scripts now default to `can1`.
 
 ## Work in progress
 None.
 
 ## Blockers
-Adapter (DSD TECH SH-C31G) arrives Mon 2026-11-16.
+None.
 
 ## Next action
-On the bench (no car, termination ON): `lsusb` / `dmesg` / `ip -details link show` /
-`uname -r` → confirm candleLight → `sudo scripts/setup_can.sh` → confirm LISTEN-ONLY →
-`scripts/log_baseline.py --label bench --duration 10` → replace test fixtures with real
-`ip -json -details` output. See TODO.md Blocked.
+At the car: parked, engine off, **termination jumper OFF**, pinout checked with a meter.
+`sudo scripts/setup_can.sh` → confirm `<LISTEN-ONLY>` → plug into OBD →
+`scripts/log_baseline.py --label engine-off --duration 60`.
 
 ## Smallest relevant file set
 - CLAUDE.md
@@ -32,14 +32,21 @@ On the bench (no car, termination ON): `lsusb` / `dmesg` / `ip -details link sho
 - .claude/rules/can-safety.md
 
 ## Last verification
-`bash -n scripts/setup_can.sh` passed (2026-11-13).
-`python3 -m unittest discover tests`: 17 pass (2026-11-14, macOS, no hardware).
+`python3 -m unittest discover tests`: 17 pass (2026-11-16, Orin, Python 3.12.3).
+Bench run of both scripts on `can1` passed (2026-11-16).
 
-## Open questions (resolve on hardware day)
-- [ ] Shipped firmware: candleLight or slcan? (`lsusb`, `dmesg`)
-- [ ] Interface name: the Orin Nano has its own CAN controller (mttcan). If
-      that's enabled, the USB adapter may enumerate as `can1`. (inferred; both scripts refuse non-gs_usb interfaces)
-- [ ] Does gs_usb on this L4T kernel honor `listen-only on`? (inferred; the script fails loudly if not)
-- [ ] Does this iproute2 support `-json`, and is the active mode under `linkinfo.info_data.ctrlmode`? (inferred; log_baseline.py depends on it)
+## Incident note (2026-11-16, bench only)
+Before this session's bench test, a session outside this project built gs_usb and ran
+`ip link set can1 up` **without** `listen-only on`. `can1` sat in normal mode with
+1 TX frame counted and TX error counter 128. It was never connected to the car.
+It was taken down and re-brought up with `setup_can.sh`. The TX error counter
+stayed at 128 after that (see HARDWARE.md quirk).
+
+## Open questions
+- [x] Shipped firmware: candleLight (`1d50:606f`).
+- [x] Interface name: `can1` (mttcan owns `can0`).
+- [x] gs_usb honors `listen-only on`: yes.
+- [x] iproute2 `-json` works; active mode is under `linkinfo.info_data.ctrlmode`.
 - [ ] Ground: share GND across the isolation barrier or not?
 - [ ] How much passive traffic shows up on OBD pins 6/14 behind the CEM gateway?
+- [ ] No real `ip -json` fixture for listen-only off yet (would need normal mode on the bench).

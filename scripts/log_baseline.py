@@ -12,7 +12,7 @@ Writes, under captures/ (gitignored):
 
 Terminal output shows IDs and counts only, never payload bytes (VIN safety).
 
-Usage: scripts/log_baseline.py --label engine-off [--iface can0]
+Usage: scripts/log_baseline.py --label engine-off [--iface can1]
            [--bitrate 500000] [--duration 60] [--notes "..."]
 
 Exit codes: 0 valid capture, 1 pre-check failed (nothing captured),
@@ -190,7 +190,7 @@ def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description="Passive listen-only CAN baseline capture.")
     ap.add_argument("--label", required=True, type=label_arg,
                     help="car state, e.g. engine-off, ignition-on, bench")
-    ap.add_argument("--iface", default="can0")
+    ap.add_argument("--iface", default="can1")
     ap.add_argument("--bitrate", type=int, default=500000)
     ap.add_argument("--duration", type=float, default=None,
                     help="seconds; omit to run until Ctrl-C")

@@ -3,13 +3,13 @@
 # Exits non-zero, and leaves the interface DOWN, unless listen-only is confirmed.
 #
 # Usage: sudo scripts/setup_can.sh [iface] [bitrate]
-#   iface   default: can0   (check: the Orin's on-board mttcan may own can0)
+#   iface   default: can1   (the Orin's on-board mttcan owns can0)
 #   bitrate default: 500000
 #
 # Status: written 2026-11-13, NOT yet run on hardware. (inferred)
 set -euo pipefail
 
-IFACE="${1:-can0}"
+IFACE="${1:-can1}"
 BITRATE="${2:-500000}"
 
 die() { echo "ERROR: $*" >&2; ip link set "$IFACE" down 2>/dev/null || true; exit 1; }

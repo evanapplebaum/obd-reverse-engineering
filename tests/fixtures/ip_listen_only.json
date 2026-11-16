@@ -1,55 +1,104 @@
 [
-  {
-    "_note": "hand-written (inferred): replace with real `ip -json -details link show dev can0` output from the Jetson",
-    "ifindex": 5,
-    "ifname": "can0",
-    "flags": [
-      "NOARP",
-      "UP",
-      "LOWER_UP",
-      "ECHO"
-    ],
-    "mtu": 72,
-    "qdisc": "pfifo_fast",
-    "operstate": "UP",
-    "linkmode": "DEFAULT",
-    "group": "default",
-    "txqlen": 10,
-    "link_type": "can",
-    "linkinfo": {
-      "info_kind": "can",
-      "info_data": {
-        "ctrlmode": [
-          "LISTEN-ONLY"
+    {
+        "ifindex": 9,
+        "ifname": "can1",
+        "flags": [
+            "NOARP",
+            "UP",
+            "LOWER_UP",
+            "ECHO"
         ],
-        "ctrlmode_supported": [
-          "LOOPBACK",
-          "LISTEN-ONLY",
-          "TRIPLE-SAMPLING",
-          "ONE-SHOT",
-          "BERR-REPORTING",
-          "FD"
-        ],
-        "state": "ERROR-ACTIVE",
-        "berr_counter": {
-          "tx": 0,
-          "rx": 0
+        "mtu": 16,
+        "qdisc": "pfifo_fast",
+        "operstate": "UP",
+        "linkmode": "DEFAULT",
+        "group": "default",
+        "txqlen": 10,
+        "link_type": "can",
+        "promiscuity": 0,
+        "allmulti": 0,
+        "min_mtu": 0,
+        "max_mtu": 0,
+        "linkinfo": {
+            "info_kind": "can",
+            "info_data": {
+                "ctrlmode": [
+                    "LISTEN-ONLY"
+                ],
+                "ctrlmode_supported": [
+                    "LOOPBACK",
+                    "LISTEN-ONLY",
+                    "ONE-SHOT",
+                    "FD",
+                    "CC-LEN8-DLC"
+                ],
+                "state": "ERROR-ACTIVE",
+                "berr_counter": {
+                    "tx": 128,
+                    "rx": 0
+                },
+                "restart_ms": 0,
+                "bittiming": {
+                    "bitrate": 500000,
+                    "sample_point": "0.870",
+                    "tq": 11,
+                    "prop_seg": 73,
+                    "phase_seg1": 74,
+                    "phase_seg2": 22,
+                    "sjw": 11,
+                    "brp": 2
+                },
+                "bittiming_const": {
+                    "name": "gs_usb",
+                    "tseg1": {
+                        "min": 2,
+                        "max": 256
+                    },
+                    "tseg2": {
+                        "min": 2,
+                        "max": 128
+                    },
+                    "sjw": {
+                        "min": 1,
+                        "max": 128
+                    },
+                    "brp": {
+                        "min": 1,
+                        "max": 512
+                    },
+                    "brp_inc": 1
+                },
+                "data_bittiming_const": {
+                    "name": "gs_usb",
+                    "tseg1": {
+                        "min": 1,
+                        "max": 32
+                    },
+                    "tseg2": {
+                        "min": 1,
+                        "max": 16
+                    },
+                    "sjw": {
+                        "min": 1,
+                        "max": 16
+                    },
+                    "brp": {
+                        "min": 1,
+                        "max": 32
+                    },
+                    "brp_inc": 1
+                },
+                "clock": 170000000
+            }
         },
-        "restart_ms": 0,
-        "bittiming": {
-          "bitrate": 500000,
-          "sample_point": "0.875",
-          "tq": 125,
-          "prop_seg": 6,
-          "phase_seg1": 7,
-          "phase_seg2": 2,
-          "sjw": 1,
-          "brp": 6
-        },
-        "clock": 48000000
-      }
-    },
-    "parentbus": "usb",
-    "parentdev": "1-2.1:1.0"
-  }
+        "num_tx_queues": 1,
+        "num_rx_queues": 1,
+        "gso_max_size": 65536,
+        "gso_max_segs": 65535,
+        "tso_max_size": 65536,
+        "tso_max_segs": 65535,
+        "gro_max_size": 65536,
+        "parentbus": "usb",
+        "parentdev": "1-2.1:1.0"
+    }
 ]

@@ -7,27 +7,28 @@ adapter on a Jetson. **Parked only. Never on a public road.**
 > it has been checked on real hardware.
 
 ## Commands
-- Bring up bus: `sudo scripts/setup_can.sh [iface] [bitrate]` (default can0 @ 500k,
+- Bring up bus: `sudo scripts/setup_can.sh [iface] [bitrate]` (default can1 @ 500k,
   listen-only; refuses non-gs_usb interfaces and exits unless LISTEN-ONLY is read back)
-  (written, not yet run on hardware: inferred)
-- Baseline log: `scripts/log_baseline.py --label <car-state> [--iface can0] [--duration s]`
+  (bench-verified 2026-11-16)
+- Baseline log: `scripts/log_baseline.py --label <car-state> [--iface can1] [--duration s]`
   (checks only, never configures: refuses unless gs_usb + up + LISTEN-ONLY + bitrate;
-  writes `captures/<stamp>_<label>.log|.json`) (written, not yet run on hardware: inferred)
+  writes `captures/<stamp>_<label>.log|.json`) (bench-verified 2026-11-16)
 - Tests (no hardware): `python3 -m unittest discover tests`
 
 ## Architecture invariants
-- Host: Jetson Orin Nano, native SocketCAN, interface `can0` (inferred: see STATE.md open questions)
+- Host: Jetson Orin Nano, native SocketCAN. Adapter is **`can1`** (gs_usb);
+  `can0` is the Orin's on-board mttcan and is not used.
 - Target bus: **classic CAN @ 500 kbit/s, 11-bit IDs** (ISO 15765-4) (inferred)
 
 ## Required verification
 - Before any capture, confirm the interface is in listen-only/silent mode:
-  `ip -details link show can0` must show `LISTEN-ONLY`.
+  `ip -details link show can1` must show `LISTEN-ONLY`.
 
 ## Change boundaries (hard)
 - **NEVER** transmit to a live bus without explicit approval in this session.
   This includes `cansend`, `cangen`, `canplayer` (log replay), `cansequence`,
   `canfdtest`, `cangw`, `isotpsend`, `isotptun`, UDS tools, and any socket write.
-- The real guard is the interface: `can0` must be **listen-only** before it is
+- The real guard is the interface: `can1` must be **listen-only** before it is
   connected to the car. A controller in normal mode ACKs frames, which counts
   as transmitting.
 - The adapter's termination jumper stays **OFF** when connected to the car.

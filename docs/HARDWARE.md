@@ -9,13 +9,20 @@
 
 ## Host
 - Jetson Orin Nano, Ubuntu / L4T, native SocketCAN
-- Kernel version: TBD (`uname -r`). Matters for gs_usb CAN-FD support. (inferred)
+- Kernel: `6.8.12-1021-tegra`.
+- The stock L4T kernel did not ship `gs_usb`. It is an **out-of-tree, unsigned build**
+  installed at `/lib/modules/6.8.12-1021-tegra/updates/gs_usb.ko` (taints the kernel).
+  **Rebuild it after any kernel update**, or the adapter won't enumerate.
+- Interfaces: `can0` = on-board mttcan (unused). `can1` = the USB adapter (gs_usb).
 
 ## Firmware
 - **candleLight** (`gs_usb` driver): native SocketCAN, shows up as `canN`. Plan of record.
-- CAN-FD frames may need **slcan** firmware or a newer kernel's gs_usb FD
-  support. Not needed day one (see decision 002). (inferred)
-- Shipped firmware: TBD. Check `lsusb` / `dmesg` when it arrives.
+- Shipped firmware: **candleLight**, USB ID `1d50:606f` (verified 2026-11-16).
+- gs_usb reports `FD` in `ctrlmode_supported`, so CAN-FD should not need slcan.
+  Not needed day one (see decision 002). (inferred: FD not exercised)
+- `listen-only on` is honored: `ip -details` shows `<LISTEN-ONLY>` (verified 2026-11-16).
+- Quirk: the TX error counter is not reset by `ip link set down/up`; a stale
+  value (e.g. 128) can persist. Replug the adapter to clear it.
 
 ## Wiring (OBD-II J1962)
 | OBD pin | Signal  | Adapter |
